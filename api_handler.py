@@ -2,7 +2,7 @@ import requests
 import logging
 
 # إعدادات الرابط الأساسي (استبدله برابط الـ API الخاص بك)
-BASE_URL = "https://your-api-url.com"
+BASE_URL = "https://script.google.com/macros/s/AKfycbwHwUC6G9BB427nSUZy5l7d3k_CKMCFw9MscSyIyNNlEGdCQUbmq5sWj3elIsDtHElD/exec"
 
 # إعداد التسجيل للأخطاء
 logging.basicConfig(level=logging.INFO)
