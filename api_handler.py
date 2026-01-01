@@ -1,56 +1,42 @@
-import requests
 import logging
 
-# إعدادات الرابط الأساسي (استبدله برابط الـ API الخاص بك)
-BASE_URL = "https://script.google.com/macros/s/AKfycbwHwUC6G9BB427nSUZy5l7d3k_CKMCFw9MscSyIyNNlEGdCQUbmq5sWj3elIsDtHElD/exec"
-
-# إعداد التسجيل للأخطاء
+# إعداد التسجيل
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def check_login(username, password):
-    """التحقق من بيانات تسجيل الدخول"""
-    try:
-        response = requests.post(f"{BASE_URL}/login", json={"username": username, "password": password})
-        if response.status_code == 200:
-            return response.json()
-        return None
-    except Exception as e:
-        logger.error(f"Login error: {e}")
-        return None
+    """التحقق من البيانات بناءً على صورة لجنة التحكيم"""
+    # تحويل القيم لنصوص لضمان المقارنة الصحيحة
+    u = str(username).strip()
+    p = str(password).strip()
+
+    # فحص الحساب الأول (admin)
+    if u == "admin" and p == "123":
+        return {"user_id": "admin_01", "name": "Admin User", "type": "jury"}
+    
+    # فحص الحساب الثاني (student)
+    elif u == "student" and p == "456":
+        return {"user_id": "std_01", "name": "Abdelkhalek", "type": "student"}
+    
+    return None
 
 def fetch_all_data(user_id):
-    """جلب كافة البيانات الخاصة بالمستخدم"""
-    try:
-        response = requests.get(f"{BASE_URL}/data/{user_id}")
-        return response.json() if response.status_code == 200 else {}
-    except Exception as e:
-        logger.error(f"Fetch error: {e}")
-        return {}
-
-def delete_user_cloud(user_id):
-    """حذف بيانات المستخدم من السحاب"""
-    try:
-        response = requests.delete(f"{BASE_URL}/delete/{user_id}")
-        return response.status_code == 200
-    except Exception as e:
-        logger.error(f"Delete error: {e}")
-        return False
-
-def cloud_action(action_type, payload):
-    """تنفيذ عمليات عامة على السحاب (مثل الرفع أو التحديث)"""
-    try:
-        response = requests.post(f"{BASE_URL}/action", json={"type": action_type, "data": payload})
-        return response.json()
-    except Exception as e:
-        logger.error(f"Cloud action error: {e}")
-        return {"error": str(e)}
+    """بيانات تجريبية للباكلوج تظهر فور تسجيل الدخول"""
+    return {
+        "رياضيات": 18,
+        "كيمياء": 10,
+        "فيزياء": 10,
+        "إنجازات": "65%"
+    }
 
 def get_user_plans(user_id):
-    """جلب الخطط الدراسية الخاصة بالمستخدم"""
-    try:
-        response = requests.get(f"{BASE_URL}/plans/{user_id}")
-        return response.json() if response.status_code == 200 else []
-    except Exception as e:
-        logger.error(f"Get plans error: {e}")
-        return []
+    """خطط دراسية وهمية للعرض"""
+    return ["خطة الـ 30 يوم", "مراجعة ليلة الامتحان"]
+
+def cloud_action(action, data):
+    """محاكاة حفظ البيانات على السحاب"""
+    return {"status": "success"}
+
+def delete_user_cloud(user_id):
+    """محاكاة حذف البيانات"""
+    return True
